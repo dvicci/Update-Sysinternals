@@ -88,9 +88,10 @@ Function UpdateSysinternalsHTTP ([string]$ToolsLocalDir, [string]$ToolsURL) {
                     $line = $line.toString().Trim(' ')
                     $line = $line -replace '\s+', ' '
                     $lineArray = $line -Split "\s"
-                    $date = $lineArray[0] + " " + $lineArray[1] + " " + $lineArray[2]
-                    $file = $lineArray[4]
-                    $Tools["$file"] = [datetime]::ParseExact($date,"M/d/yyyy h:mm tt",$WebPageCulture)
+                    $date = $lineArray[0] + " " + $lineArray[1] + " " + $lineArray[2] + " " + $lineArray[3] + " " + $lineArray[4] + " " + $lineArray[5]
+                    $date = [DateTime]::ParseExact($date, 'dddd, MMMM d, yyyy h:mm tt',$null)
+                    $file = $lineArray[7]
+                    $Tools["$file"] = $date
                 }
             }
         }
@@ -132,7 +133,7 @@ Function UpdateSysinternalsHTTP ([string]$ToolsLocalDir, [string]$ToolsURL) {
     }
 }
 
-$AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
+$AllProtocols = [System.Net.SecurityProtocolType]'Tls11,Tls12,Tls13'
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 
 $WPFButton_SelectFolder.Add_Click({
